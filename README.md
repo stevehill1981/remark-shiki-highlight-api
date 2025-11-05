@@ -12,7 +12,7 @@ Traditional syntax highlighting wraps each token in a `<span>` element, creating
 - Highlight API: 1 text node per line
 - Result: 80-90% fewer DOM nodes
 
-Built on top of [shiki-highlight-api](https://github.com/stevehill1981/shiki-highlight-api).
+Built on top of [shiki-highlight-api](https://github.com/shiki-highlights/shiki-highlight-api).
 
 ## Installation
 
@@ -157,4 +157,4 @@ MIT
 
 ## Contributing
 
-Contributions welcome! Please open an issue or PR on [GitHub](https://github.com/stevehill1981/remark-shiki-highlight-api).
+Contributions welcome! Please open an issue or PR on [GitHub](https://github.com/shiki-highlights/remark-shiki-highlight-api).
