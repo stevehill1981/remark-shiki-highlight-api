@@ -7,6 +7,7 @@ Remark plugin that replaces traditional Shiki code blocks with CSS Custom Highli
 Traditional syntax highlighting wraps each token in a `<span>` element, creating thousands of DOM nodes for code-heavy pages. This plugin uses the [CSS Custom Highlight API](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Custom_Highlight_API) to achieve the same visual result with dramatically fewer nodes.
 
 **Performance:**
+
 - Traditional approach: ~10 tokens/line × N lines = thousands of `<span>` elements
 - Highlight API: 1 text node per line
 - Result: 80-90% fewer DOM nodes
@@ -31,7 +32,7 @@ import { remarkHighlightApi } from 'remark-shiki-highlight-api';
 export default defineConfig({
   markdown: {
     remarkPlugins: [remarkHighlightApi],
-    syntaxHighlight: false,  // Disable Astro's default
+    syntaxHighlight: false, // Disable Astro's default
   },
 });
 ```
@@ -43,9 +44,7 @@ import { remarkHighlightApi } from 'remark-shiki-highlight-api';
 
 export default defineConfig({
   markdown: {
-    remarkPlugins: [
-      [remarkHighlightApi, { theme: 'github-dark' }]
-    ],
+    remarkPlugins: [[remarkHighlightApi, { theme: 'github-dark' }]],
     syntaxHighlight: false,
   },
 });
@@ -63,7 +62,7 @@ import myGrammar from './my-grammar.tmLanguage.json';
 export async function loadCustomLanguages() {
   await loadCustomLanguage({
     ...myGrammar,
-    name: 'mylang',  // Language ID to use in code blocks
+    name: 'mylang', // Language ID to use in code blocks
   });
 }
 ```
@@ -76,10 +75,13 @@ import { loadCustomLanguages } from './custom-languages.js';
 export default defineConfig({
   markdown: {
     remarkPlugins: [
-      [remarkHighlightApi, {
-        theme: 'dark-plus',
-        loadLanguages: loadCustomLanguages
-      }]
+      [
+        remarkHighlightApi,
+        {
+          theme: 'dark-plus',
+          loadLanguages: loadCustomLanguages,
+        },
+      ],
     ],
     syntaxHighlight: false,
   },
@@ -109,6 +111,7 @@ interface RemarkHighlightApiOptions {
 ## Browser Support
 
 The CSS Custom Highlight API is supported in:
+
 - Chrome 105+
 - Safari 17.2+
 - Firefox 140+ (with flag in earlier versions)
@@ -129,6 +132,7 @@ The result looks identical to traditional Shiki but with dramatically fewer DOM 
 ## Example
 
 Input markdown:
+
 ````markdown
 ```javascript
 function hello() {
