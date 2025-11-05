@@ -39,8 +39,11 @@
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts --clean",
     "dev": "tsup src/index.ts --format cjs,esm --dts --watch",
-    "prepublishOnly": "npm run build",
-    "test": "echo \"Tests coming soon\" && exit 0"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
     "shiki-highlight-api": "^0.1.0",
@@ -52,8 +55,14 @@
   "devDependencies": {
     "@types/mdast": "^4.0.0",
     "@types/node": "^20.0.0",
+    "@types/unist": "^3.0.3",
+    "@vitest/ui": "^4.0.7",
     "mdast": "^3.0.0",
+    "rehype-stringify": "^10.0.1",
+    "remark-parse": "^11.0.0",
+    "remark-rehype": "^11.1.2",
     "tsup": "^8.0.0",
-    "typescript": "^5.0.0"
+    "typescript": "^5.0.0",
+    "vitest": "^4.0.7"
   }
 }

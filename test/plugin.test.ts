@@ -1,0 +1,130 @@
+import { describe, it, expect, vi } from 'vitest';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import rehypeStringify from 'rehype-stringify';
+import { remarkHighlightApi } from '../src/index';
+
+describe('remarkHighlightApi', () => {
+  it('transforms code blocks with Highlight API', async () => {
+    const markdown = '```javascript\nconst x = 42;\n```';
+
+    const result = await unified()
+      .use(remarkParse)
+      .use(remarkHighlightApi)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeStringify, { allowDangerousHtml: true })
+      .process(markdown);
+
+    const html = String(result);
+
+    // Should contain Highlight API elements
+    expect(html).toContain('<pre');
+    expect(html).toContain('<code');
+    expect(html).toContain('const x = 42;');
+    expect(html).toContain('<style');
+    expect(html).toContain('::highlight(');
+    expect(html).toContain('<script');
+    expect(html).toContain('CSS.highlights.set');
+  });
+
+  it('uses specified theme', async () => {
+    const markdown = '```javascript\nconst x = 42;\n```';
+
+    const result = await unified()
+      .use(remarkParse)
+      .use(remarkHighlightApi, { theme: 'dark-plus' })
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeStringify, { allowDangerousHtml: true })
+      .process(markdown);
+
+    const html = String(result);
+    expect(html).toContain('const x = 42;');
+  });
+
+  it('calls loadLanguages callback once', async () => {
+    const loadLanguages = vi.fn().mockResolvedValue(undefined);
+    const markdown = '```javascript\nconst x = 42;\n```\n\n```javascript\nconst y = 100;\n```';
+
+    await unified()
+      .use(remarkParse)
+      .use(remarkHighlightApi, { loadLanguages })
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeStringify, { allowDangerousHtml: true })
+      .process(markdown);
+
+    // Should only call loadLanguages once, not per code block
+    expect(loadLanguages).toHaveBeenCalledTimes(1);
+  });
+
+  it('handles multiple code blocks', async () => {
+    const markdown = `
+\`\`\`javascript
+const x = 42;
+\`\`\`
+
+\`\`\`typescript
+const y: number = 100;
+\`\`\`
+`;
+
+    const result = await unified()
+      .use(remarkParse)
+      .use(remarkHighlightApi)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeStringify, { allowDangerousHtml: true })
+      .process(markdown);
+
+    const html = String(result);
+
+    // Should process both blocks
+    expect(html).toContain('const x = 42;');
+    expect(html).toContain('const y: number = 100;');
+    // Should have multiple highlight registrations
+    expect((html.match(/CSS\.highlights\.set/g) || []).length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('preserves code block language', async () => {
+    const markdown = '```typescript\nlet x: number;\n```';
+
+    const result = await unified()
+      .use(remarkParse)
+      .use(remarkHighlightApi)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeStringify, { allowDangerousHtml: true })
+      .process(markdown);
+
+    const html = String(result);
+    expect(html).toContain('let x: number;');
+  });
+
+  it('works with code blocks without language specified', async () => {
+    const markdown = '```\nplain text\n```';
+
+    const result = await unified()
+      .use(remarkParse)
+      .use(remarkHighlightApi)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeStringify, { allowDangerousHtml: true })
+      .process(markdown);
+
+    const html = String(result);
+    // Should still process it (defaults to 'text')
+    expect(html).toContain('plain text');
+  });
+
+  it('handles empty code blocks', async () => {
+    const markdown = '```javascript\n\n```';
+
+    const result = await unified()
+      .use(remarkParse)
+      .use(remarkHighlightApi)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeStringify, { allowDangerousHtml: true })
+      .process(markdown);
+
+    const html = String(result);
+    // Should still generate valid HTML
+    expect(html).toContain('<code');
+  });
+});
