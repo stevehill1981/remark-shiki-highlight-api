@@ -4,6 +4,7 @@
  */
 import { visit } from 'unist-util-visit';
 import type { Root, Code } from 'mdast';
+import type { Parent } from 'unist';
 import { codeToHighlightHtml } from 'shiki-highlight-api';
 
 let blockCounter = 0;
@@ -33,7 +34,7 @@ export function remarkHighlightApi(options: RemarkHighlightApiOptions = {}) {
       languagesLoaded = true;
     }
 
-    const codeBlocks: Array<{ node: Code; index: number; parent: any }> = [];
+    const codeBlocks: Array<{ node: Code; index: number; parent: Parent }> = [];
 
     // First pass: collect all code blocks
     visit(tree, 'code', (node: Code, index, parent) => {

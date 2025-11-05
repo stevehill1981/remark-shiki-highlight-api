@@ -21,6 +21,9 @@
   "bugs": {
     "url": "https://github.com/stevehill1981/remark-shiki-highlight-api/issues"
   },
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -43,6 +46,10 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "prepublishOnly": "npm run build && npm test"
   },
   "dependencies": {
@@ -53,16 +60,22 @@
     "unified": ">=10.0.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/eslint__js": "^8.42.3",
     "@types/mdast": "^4.0.0",
     "@types/node": "^24.10.0",
     "@types/unist": "^3.0.3",
     "@vitest/ui": "^4.0.7",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
     "mdast": "^3.0.0",
+    "prettier": "^3.6.2",
     "rehype-stringify": "^10.0.1",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
     "tsup": "^8.0.0",
     "typescript": "^5.0.0",
+    "typescript-eslint": "^8.46.3",
     "vitest": "^4.0.7"
   }
 }
