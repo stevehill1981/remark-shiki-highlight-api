@@ -5,7 +5,9 @@
 import { visit } from 'unist-util-visit';
 import type { Root, Code } from 'mdast';
 import type { Parent } from 'unist';
-import { codeToHighlightHtml } from 'shiki-highlight-api';
+import { codeToHighlightHtml, loadCustomLanguage } from 'shiki-highlight-api';
+import { bundledLanguages } from 'shiki';
+import type { BundledLanguage } from 'shiki';
 
 let blockCounter = 0;
 
@@ -34,9 +36,32 @@ export function remarkHighlightApi(options: RemarkHighlightApiOptions = {}) {
       languagesLoaded = true;
     }
 
+    // First pass: collect all unique languages
+    const detectedLanguages = new Set<string>();
+    visit(tree, 'code', (node: Code) => {
+      if (node.lang && node.lang !== 'text') {
+        detectedLanguages.add(node.lang);
+      }
+    });
+
+    // Load detected bundled languages
+    if (detectedLanguages.size > 0) {
+      for (const lang of detectedLanguages) {
+        // Check if language exists in bundledLanguages
+        if (lang in bundledLanguages) {
+          try {
+            const langModule = bundledLanguages[lang as BundledLanguage];
+            await loadCustomLanguage(langModule);
+          } catch (error) {
+            console.warn(`Failed to load language ${lang}:`, error);
+          }
+        }
+      }
+    }
+
     const codeBlocks: Array<{ node: Code; index: number; parent: Parent }> = [];
 
-    // First pass: collect all code blocks
+    // Second pass: collect all code blocks
     visit(tree, 'code', (node: Code, index, parent) => {
       if (index !== undefined && parent) {
         codeBlocks.push({ node, index, parent });
