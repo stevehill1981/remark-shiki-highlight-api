@@ -127,4 +127,23 @@ const y: number = 100;
     // Should still generate valid HTML
     expect(html).toContain('<code');
   });
+
+  it('processes Python code blocks', async () => {
+    const markdown = '```python\ndef hello():\n    print("world")\n```';
+
+    const result = await unified()
+      .use(remarkParse)
+      .use(remarkHighlightApi)
+      .use(remarkRehype, { allowDangerousHtml: true })
+      .use(rehypeStringify, { allowDangerousHtml: true })
+      .process(markdown);
+
+    const html = String(result);
+
+    // Should process Python code successfully
+    expect(html).toContain('def hello():');
+    expect(html).toContain('print("world")');
+    expect(html).toContain('<style');
+    expect(html).toContain('::highlight(');
+  });
 });
