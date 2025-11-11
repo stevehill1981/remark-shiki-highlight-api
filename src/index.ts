@@ -10,6 +10,7 @@ import { bundledLanguages } from 'shiki';
 import type { BundledLanguage } from 'shiki';
 
 let blockCounter = 0;
+const loadedLanguages = new Set<string>();
 
 export interface RemarkHighlightApiOptions {
   /**
@@ -47,11 +48,15 @@ export function remarkHighlightApi(options: RemarkHighlightApiOptions = {}) {
     // Load detected bundled languages
     if (detectedLanguages.size > 0) {
       for (const lang of detectedLanguages) {
+        // Skip if already loaded
+        if (loadedLanguages.has(lang)) continue;
+
         // Check if language exists in bundledLanguages
         if (lang in bundledLanguages) {
           try {
             const langModule = bundledLanguages[lang as BundledLanguage];
             await loadCustomLanguage(langModule);
+            loadedLanguages.add(lang);
           } catch (error) {
             console.warn(`Failed to load language ${lang}:`, error);
           }
