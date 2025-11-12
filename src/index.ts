@@ -5,7 +5,12 @@
 import { visit } from 'unist-util-visit';
 import type { Root, Code } from 'mdast';
 import type { Parent } from 'unist';
-import { codeToHighlightHtml, loadCustomLanguage, type HighlightOptions, type BundledLanguage } from 'shiki-highlight-api';
+import {
+  codeToHighlightHtml,
+  loadCustomLanguage,
+  type HighlightOptions,
+  type BundledLanguage,
+} from 'shiki-highlight-api';
 import { bundledLanguages } from 'shiki';
 
 let blockCounter = 0;

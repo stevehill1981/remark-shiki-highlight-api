@@ -133,15 +133,15 @@ Highlight specific lines using curly braces with line numbers or ranges:
 
 ````markdown
 ```javascript {1,3}
-const a = 1;  // highlighted
+const a = 1; // highlighted
 const b = 2;
-const c = 3;  // highlighted
+const c = 3; // highlighted
 ```
 
 ```javascript {1-3}
-const a = 1;  // highlighted
-const b = 2;  // highlighted
-const c = 3;  // highlighted
+const a = 1; // highlighted
+const b = 2; // highlighted
+const c = 3; // highlighted
 ```
 
 ```javascript {1,3-5,7}
@@ -155,13 +155,13 @@ Display line numbers using `showLineNumbers` or `lineNumbers` flags:
 
 ````markdown
 ```javascript showLineNumbers
-const x = 1;  // Shows line 1
-const y = 2;  // Shows line 2
+const x = 1; // Shows line 1
+const y = 2; // Shows line 2
 ```
 
 ```javascript lineNumbers:10
-const x = 1;  // Shows line 10
-const y = 2;  // Shows line 11
+const x = 1; // Shows line 10
+const y = 2; // Shows line 11
 ```
 ````
 
@@ -171,10 +171,10 @@ Show added and removed lines using `+` and `-` prefixes:
 
 ````markdown
 ```javascript +1,2 -4
-const a = 1;  // + added
-const b = 2;  // + added
+const a = 1; // + added
+const b = 2; // + added
 const c = 3;
-const d = 4;  // - removed
+const d = 4; // - removed
 ```
 ````
 
@@ -184,10 +184,10 @@ Focus specific lines while blurring others using `focus{}` syntax:
 
 ````markdown
 ```javascript focus{2,3}
-const a = 1;  // blurred
-const b = 2;  // focused
-const c = 3;  // focused
-const d = 4;  // blurred
+const a = 1; // blurred
+const b = 2; // focused
+const c = 3; // focused
+const d = 4; // blurred
 ```
 
 ```javascript focus{1-3}
@@ -201,9 +201,9 @@ You can combine multiple features in a single code block:
 
 ````markdown
 ```javascript {1,3} showLineNumbers:10 +1 focus{1-2}
-const a = 1;  // line 10, highlighted, added, focused
-const b = 2;  // line 11, focused
-const c = 3;  // line 12, highlighted, blurred
+const a = 1; // line 10, highlighted, added, focused
+const b = 2; // line 11, focused
+const c = 3; // line 12, highlighted, blurred
 ```
 ````
 
