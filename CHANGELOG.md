@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - **Critical**: Fixed language loading by marking `shiki` as external dependency
-  - Resolved "Cannot find module 'javascript-*.mjs'" errors
+  - Resolved "Cannot find module 'javascript-\*.mjs'" errors
   - Dynamic language imports now work correctly at runtime
   - Reduced bundle size from bloated to 3.77 KB (ESM)
 
