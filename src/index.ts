@@ -54,8 +54,10 @@ export function remarkHighlightApi(options: RemarkHighlightApiOptions = {}) {
         // Check if language exists in bundledLanguages
         if (lang in bundledLanguages) {
           try {
-            const langModule = bundledLanguages[lang as BundledLanguage];
-            await loadCustomLanguage(langModule);
+            const langModule = await bundledLanguages[lang as BundledLanguage]();
+            // Type assertion needed because bundledLanguages returns module format
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            await loadCustomLanguage(langModule as any);
             loadedLanguages.add(lang);
           } catch (error) {
             console.warn(`Failed to load language ${lang}:`, error);
