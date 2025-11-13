@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.5] - 2025-11-13
+
+### Fixed
+
+- **Critical**: Updated `shiki-highlight-api` to `^1.0.4` to fix highlighter singleton race condition
+  - Eliminates Shiki warnings about creating multiple instances during parallel builds
+  - Critical fix for sites with 100+ pages built in parallel (e.g., Astro)
+  - Previously could create 220+ duplicate highlighter instances during build
+  - No changes to plugin code itself - dependency update only
+  - Closes #23
+
+### Technical Details
+
+- Dependency update from shiki-highlight-api 1.0.3 → 1.0.4
+- Fix uses promise caching to prevent concurrent highlighter instantiation
+- All existing tests continue to pass
+
 ## [0.3.4] - 2025-01-12
 
 ### Fixed
